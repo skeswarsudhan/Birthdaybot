@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birthday Celebration — Action Needed</title>
+  <style>
+    body { margin: 0; padding: 0; background-color: #f4f4f5; font-family: Arial, Helvetica, sans-serif; }
+    table { border-collapse: collapse; }
+    a { color: inherit; text-decoration: none; }
+    img { border: 0; display: block; }
+
+    .wrapper { width: 100%; background-color: #f4f4f5; padding: 32px 0; }
+    .card { width: 600px; max-width: 100%; margin: 0 auto; background-color: #ffffff;
+            border-radius: 12px; overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+
+    /* Header */
+    .header { background: linear-gradient(135deg, #6C3DE8 0%, #B06AFF 100%);
+              padding: 40px 40px 32px; text-align: center; }
+    .header-emoji { font-size: 56px; line-height: 1; margin-bottom: 12px; }
+    .header-title { color: #ffffff; font-size: 24px; font-weight: 700;
+                    letter-spacing: -0.5px; margin: 0; }
+    .header-subtitle { color: rgba(255,255,255,0.85); font-size: 15px; margin: 8px 0 0; }
+
+    /* Birthday banner */
+    .banner { background-color: #FFF7ED; border-left: 4px solid #F97316;
+              margin: 28px 40px 0; padding: 16px 20px; border-radius: 0 8px 8px 0; }
+    .banner-name { font-size: 20px; font-weight: 700; color: #1a1a2e; margin: 0 0 4px; }
+    .banner-date { font-size: 14px; color: #78716c; margin: 0; }
+
+    /* Body */
+    .body { padding: 28px 40px 0; }
+    .body p { font-size: 15px; line-height: 1.7; color: #374151; margin: 0 0 16px; }
+
+    /* What we need */
+    .section-title { font-size: 13px; font-weight: 700; color: #6C3DE8;
+                     text-transform: uppercase; letter-spacing: 0.8px;
+                     margin: 24px 0 12px; }
+    .checklist { padding: 0; margin: 0 0 8px; list-style: none; }
+    .checklist li { font-size: 14px; color: #374151; padding: 5px 0 5px 24px;
+                    position: relative; line-height: 1.5; }
+    .checklist li::before { content: "✓"; position: absolute; left: 0;
+                             color: #10b981; font-weight: 700; }
+
+    /* Deadline note */
+    .deadline { background-color: #FEF3C7; border: 1px solid #FDE68A;
+                border-radius: 8px; padding: 12px 16px; margin: 20px 0;
+                font-size: 13px; color: #92400E; }
+
+    /* CTA Button */
+    .cta-wrap { text-align: center; padding: 28px 0; }
+    .cta-btn { display: inline-block; background: linear-gradient(135deg, #6C3DE8, #B06AFF);
+               color: #ffffff !important; font-size: 16px; font-weight: 700;
+               padding: 16px 40px; border-radius: 50px;
+               text-decoration: none; letter-spacing: 0.3px; }
+
+    /* Footer */
+    .footer { border-top: 1px solid #f0f0f0; padding: 20px 40px;
+              text-align: center; color: #9ca3af; font-size: 12px; line-height: 1.6; }
+    .footer a { color: #6C3DE8; }
+  </style>
+</head>
+<body>
+<table class="wrapper" width="100%" cellpadding="0" cellspacing="0">
+  <tr>
+    <td align="center">
+      <table class="card" width="600" cellpadding="0" cellspacing="0">
+
+        <!-- Header -->
+        <tr>
+          <td class="header">
+            <div class="header-emoji">🎂</div>
+            <h1 class="header-title">Birthday Celebration Coming Up!</h1>
+            <p class="header-subtitle">We need a little help from you, {{ manager_name }}.</p>
+          </td>
+        </tr>
+
+        <!-- Birthday Banner -->
+        <tr>
+          <td>
+            <div class="banner">
+              <p class="banner-name">🥳 {{ employee_name }}</p>
+              <p class="banner-date">Birthday: <strong>{{ birthday_date }}</strong>
+                &nbsp;·&nbsp; That's in <strong>{{ days_left }} day{% if days_left != 1 %}s{% endif %}</strong>!</p>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Body -->
+        <tr>
+          <td class="body">
+            <p>
+              Hey {{ manager_name }}! We're putting together something special for
+              <strong>{{ employee_name }}</strong>'s upcoming birthday and we'd love your help
+              to make it genuinely personal.
+            </p>
+            <p>
+              Could you spare 3 minutes to share a few details? The more you tell us,
+              the more heartfelt the birthday message will be.
+            </p>
+
+            <p class="section-title">What we're asking for</p>
+            <ul class="checklist">
+              <li>A couple of fun facts about {{ employee_name }} (hobbies, achievements, quirks!)</li>
+              <li>A short personal message from you to them</li>
+              <li>Optional: a few photos (up to 5) — we'll build a little collage 🖼️</li>
+            </ul>
+
+            <div class="deadline">
+              ⏰ <strong>Please submit by {{ deadline }}</strong> so we have time to craft the perfect message.
+            </div>
+          </td>
+        </tr>
+
+        <!-- CTA -->
+        <tr>
+          <td class="cta-wrap">
+            <a class="cta-btn" href="{{ form_url }}" target="_blank">
+              Fill in the Birthday Form →
+            </a>
+            <p style="font-size:12px; color:#9ca3af; margin-top:14px;">
+              Or copy this link: <a href="{{ form_url }}" style="color:#6C3DE8;">{{ form_url }}</a>
+            </p>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td class="footer">
+            This email was sent automatically by Birthday Bot.<br>
+            You received this because you are listed as {{ employee_name }}'s manager.
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Birthday Bot Daily Digest</title>
+  <style>
+    body { margin: 0; padding: 0; background-color: #f4f4f5; font-family: Arial, Helvetica, sans-serif; }
+    table { border-collapse: collapse; }
+    .wrapper { width: 100%; background-color: #f4f4f5; padding: 32px 0; }
+    .card { width: 560px; max-width: 100%; margin: 0 auto; background-color: #ffffff;
+            border-radius: 12px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+    .header { background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+              padding: 32px 40px; text-align: center; }
+    .header h1 { color: #fff; font-size: 20px; font-weight: 700; margin: 0 0 4px; }
+    .header p { color: rgba(255,255,255,0.8); font-size: 13px; margin: 0; }
+    .stats { padding: 28px 40px; }
+    .stat-row { display: flex; justify-content: space-between;
+                border-bottom: 1px solid #f3f4f6; padding: 12px 0; }
+    .stat-label { font-size: 14px; color: #6b7280; }
+    .stat-value { font-size: 16px; font-weight: 700; color: #111827; }
+    .stat-value.error { color: #dc2626; }
+    .footer { background-color: #f9fafb; padding: 16px 40px;
+              text-align: center; color: #9ca3af; font-size: 12px; }
+  </style>
+</head>
+<body>
+<table class="wrapper" width="100%" cellpadding="0" cellspacing="0">
+  <tr><td align="center">
+    <table class="card" width="560" cellpadding="0" cellspacing="0">
+      <tr>
+        <td class="header">
+          <h1>&#128202; Daily Digest</h1>
+          <p>Birthday Bot — {{ date }}</p>
+        </td>
+      </tr>
+      <tr>
+        <td class="stats">
+          <table width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td style="padding:12px 0;border-bottom:1px solid #f3f4f6;">
+                <span style="font-size:14px;color:#6b7280;">Birthdays scanned</span>
+              </td>
+              <td align="right" style="padding:12px 0;border-bottom:1px solid #f3f4f6;">
+                <span style="font-size:16px;font-weight:700;color:#111827;">{{ birthdays_scanned }}</span>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:12px 0;border-bottom:1px solid #f3f4f6;">
+                <span style="font-size:14px;color:#6b7280;">Manager emails sent</span>
+              </td>
+              <td align="right" style="padding:12px 0;border-bottom:1px solid #f3f4f6;">
+                <span style="font-size:16px;font-weight:700;color:#111827;">{{ manager_emails_sent }}</span>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:12px 0;border-bottom:1px solid #f3f4f6;">
+                <span style="font-size:14px;color:#6b7280;">Reminders sent</span>
+              </td>
+              <td align="right" style="padding:12px 0;border-bottom:1px solid #f3f4f6;">
+                <span style="font-size:16px;font-weight:700;color:#111827;">{{ reminders_sent }}</span>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:12px 0;border-bottom:1px solid #f3f4f6;">
+                <span style="font-size:14px;color:#6b7280;">Birthday emails sent</span>
+              </td>
+              <td align="right" style="padding:12px 0;border-bottom:1px solid #f3f4f6;">
+                <span style="font-size:16px;font-weight:700;color:#111827;">{{ birthday_emails_sent }}</span>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:12px 0;">
+                <span style="font-size:14px;color:#6b7280;">Errors</span>
+              </td>
+              <td align="right" style="padding:12px 0;">
+                <span style="font-size:16px;font-weight:700;color:{% if errors > 0 %}#dc2626{% else %}#16a34a{% endif %};">{{ errors }}</span>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td class="footer">Sent automatically by Birthday Bot at 20:00 IST</td>
+      </tr>
+    </table>
+  </td></tr>
+</table>
+</body>
+</html>

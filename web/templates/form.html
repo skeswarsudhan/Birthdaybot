@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birthday Details Submission — Birthday Bot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { 
+      font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #F9FAFB; 
+      color: #111827; 
+      min-height: 100vh;
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      padding: 40px 16px; 
+    }
+    .card { 
+      background: #FFFFFF; 
+      border: 1px solid #E5E7EB;
+      border-radius: 8px; 
+      padding: 48px 40px;
+      max-width: 540px; 
+      width: 100%;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02); 
+    }
+    h1 { 
+      font-size: 20px; 
+      font-weight: 500; 
+      text-align: center;
+      color: #111827; 
+      margin-bottom: 8px; 
+      letter-spacing: -0.2px;
+    }
+    .subtitle { 
+      text-align: center; 
+      color: #6B7280; 
+      font-size: 13px; 
+      margin-bottom: 32px; 
+      font-weight: 400;
+      line-height: 1.5;
+    }
+    .employee-banner { 
+      background: #F9FAFB;
+      border: 1px solid #E5E7EB; 
+      border-radius: 6px;
+      padding: 16px 20px; 
+      margin-bottom: 32px; 
+    }
+    .employee-banner .emp-name { 
+      font-size: 16px; 
+      font-weight: 500; 
+      color: #111827;
+      margin-bottom: 4px; 
+    }
+    .employee-banner .emp-date { 
+      font-size: 13px; 
+      color: #6B7280; 
+      font-weight: 400;
+    }
+    .employee-banner .emp-date strong {
+      font-weight: 500;
+      color: #111827;
+    }
+    .error-box { 
+      background: #FAFAFA; 
+      border: 1px solid #D1D5DB; 
+      border-radius: 6px;
+      padding: 12px 16px; 
+      margin-bottom: 24px;
+      font-size: 13px; 
+      color: #111827; 
+    }
+    label { 
+      display: block; 
+      font-size: 13px; 
+      font-weight: 500; 
+      color: #374151;
+      margin-bottom: 8px; 
+    }
+    .hint { 
+      display: block;
+      font-size: 11px; 
+      color: #9CA3AF; 
+      font-weight: 400; 
+      margin-top: 2px;
+    }
+    textarea { 
+      width: 100%; 
+      border: 1px solid #D1D5DB; 
+      border-radius: 6px;
+      padding: 12px 14px; 
+      font-size: 13px; 
+      font-family: inherit;
+      resize: vertical; 
+      min-height: 110px; 
+      color: #111827;
+      background: #FFFFFF;
+      transition: border-color 0.15s ease-in-out; 
+      outline: none; 
+      margin-bottom: 24px; 
+    }
+    textarea:focus { 
+      border-color: #4B5563; 
+    }
+    textarea::placeholder {
+      color: #9CA3AF;
+    }
+    .file-upload-area { 
+      border: 1px dashed #D1D5DB; 
+      border-radius: 6px;
+      background: #FAFBFB;
+      padding: 32px 20px; 
+      text-align: center; 
+      cursor: pointer;
+      transition: border-color 0.15s ease-in-out; 
+      margin-bottom: 32px; 
+    }
+    .file-upload-area:hover { 
+      border-color: #4B5563; 
+    }
+    .file-upload-area input[type="file"] { 
+      display: none; 
+    }
+    .file-upload-area p { 
+      font-size: 13px; 
+      color: #4B5563; 
+      margin: 0; 
+      font-weight: 400;
+    }
+    .file-upload-area .upload-btn { 
+      display: inline-block; 
+      margin-top: 12px;
+      background: #FFFFFF; 
+      border: 1px solid #D1D5DB;
+      border-radius: 4px; 
+      padding: 6px 14px;
+      font-size: 12px; 
+      font-weight: 500; 
+      cursor: pointer;
+      color: #374151; 
+      transition: background 0.15s;
+    }
+    .file-upload-area .upload-btn:hover {
+      background: #F9FAFB;
+    }
+    .submit-btn { 
+      width: 100%; 
+      background: #1F2937;
+      color: #FFFFFF; 
+      border: 1px solid #111827; 
+      border-radius: 6px; 
+      padding: 14px;
+      font-size: 14px; 
+      font-weight: 500; 
+      cursor: pointer;
+      transition: background-color 0.15s ease-in-out; 
+    }
+    .submit-btn:hover { 
+      background: #111827; 
+    }
+    .submit-btn:active { 
+      background: #000000; 
+    }
+    .submit-btn:disabled {
+      background: #9CA3AF;
+      border-color: #9CA3AF;
+      cursor: not-allowed;
+    }
+    #file-names { 
+      font-size: 12px; 
+      color: #4B5563; 
+      margin-top: 10px; 
+      font-weight: 400;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Birthday Details Submission</h1>
+    <p class="subtitle">Please provide the details to prepare the automated birthday communication for {{ employee_name }}.</p>
+
+    <div class="employee-banner">
+      <div class="emp-name">{{ employee_name }}</div>
+      {% if birthday_date %}
+      <div class="emp-date">Birthday: <strong>{{ birthday_date }}</strong></div>
+      {% endif %}
+    </div>
+
+    {% if error %}
+    <div class="error-box">Error: {{ error }}</div>
+    {% endif %}
+
+    <form method="post" action="/submit/{{ token }}" enctype="multipart/form-data" id="birthday-form">
+
+      <label for="fun_facts">
+        Fun facts
+        <span class="hint">Information about hobbies, professional accomplishments, unique stories, or milestones.</span>
+      </label>
+      <textarea id="fun_facts" name="fun_facts" rows="4"
+        placeholder="e.g., Professional accomplishments, training for a marathon, passionate about cooking, or key technical triumphs..."></textarea>
+
+      <label for="personal_message">
+        Personal message
+        <span class="hint">A message from you that will be incorporated into the final communication (optional).</span>
+      </label>
+      <textarea id="personal_message" name="personal_message" rows="3"
+        placeholder="e.g., Thank you for your leadership and dedication this year. Wishing you a great year ahead."></textarea>
+
+      <label>
+        Optional photos
+        <span class="hint">Upload up to 5 photos (JPG or PNG, maximum 2 MB per file) to create a visual collage.</span>
+      </label>
+      <div class="file-upload-area" onclick="document.getElementById('photos').click()">
+        <p>Drag and drop photos here, or click to select files</p>
+        <span class="upload-btn">Select Photos</span>
+        <input type="file" id="photos" name="photos" multiple accept=".jpg,.jpeg,.png"
+               onchange="showFileNames(this)">
+        <div id="file-names"></div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submit-btn">
+        Submit Details
+      </button>
+    </form>
+  </div>
+
+  <script>
+    function showFileNames(input) {
+      const div = document.getElementById('file-names');
+      if (input.files.length > 0) {
+        const names = Array.from(input.files).map(f => f.name).join(', ');
+        div.textContent = 'Selected: ' + names;
+      } else {
+        div.textContent = '';
+      }
+    }
+
+    // Prevent double-submit
+    document.getElementById('birthday-form').addEventListener('submit', function() {
+      const btn = document.getElementById('submit-btn');
+      btn.disabled = true;
+      btn.textContent = 'Submitting details...';
+    });
+  </script>
+</body>
+</html>

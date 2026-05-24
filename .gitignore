@@ -1,0 +1,40 @@
+# Environment secrets
+.env
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+
+# Uploaded photos
+uploads/
+
+# Log files
+logs/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+.pytest_cache/
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+~$*
+
+# Distribution
+dist/
+build/
+*.egg-info/

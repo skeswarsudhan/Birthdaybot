@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Alex+Brush&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { 
+      margin: 0; 
+      padding: 0; 
+      background-color: #F5F2EB; 
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, Arial, sans-serif; 
+      -webkit-font-smoothing: antialiased;
+    }
+    table { border-collapse: collapse; }
+    .wrapper { 
+      width: 100%; 
+      background-color: #F5F2EB; 
+      padding: 48px 0; 
+    }
+    .card { 
+      width: 600px; 
+      max-width: 100%; 
+      margin: 0 auto; 
+      background-color: #FFFFFF;
+      border: 1px solid #E5DEC9;
+      border-radius: 16px; 
+      box-shadow: 0 6px 24px rgba(74, 59, 50, 0.04);
+      overflow: hidden; 
+    }
+    /* Elegant Botanical Header */
+    .header { 
+      background-color: #E2E7E1; /* Pale sage green */
+      padding: 56px 40px 36px; 
+      text-align: center; 
+      border-bottom: 1px solid #D2DCD0;
+    }
+    .header-subtitle { 
+      font-family: 'Alex Brush', 'Brush Script MT', cursive; 
+      font-size: 36px; 
+      color: #75836F; /* Muted olive */
+      margin: 0 0 8px;
+      line-height: 1;
+    }
+    .header-title { 
+      color: #3A2F28; /* Earthy deep brown */
+      font-family: 'Playfair Display', Georgia, serif; 
+      font-size: 40px; 
+      font-weight: 600;
+      margin: 0 0 12px; 
+      line-height: 1.2;
+    }
+    .header-dept { 
+      color: #8C7B6E; 
+      font-size: 11px; 
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-weight: 600;
+      margin: 0; 
+    }
+    
+    /* Floral separator */
+    .separator {
+      text-align: center;
+      padding: 24px 0 12px;
+      color: #C5B9AC;
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    /* Collage styling */
+    .collage { 
+      padding: 24px 40px 0; 
+      text-align: center; 
+    }
+    .collage img { 
+      border-radius: 12px; 
+      max-width: 100%; 
+      height: auto; 
+      border: 6px solid #FAF8F4;
+      box-shadow: 0 6px 18px rgba(60, 51, 44, 0.06);
+    }
+
+    /* Message styling */
+    .message-wrap { 
+      padding: 32px 40px; 
+    }
+    .message { 
+      background-color: #FAF8F4; /* Pale linen background */
+      border: 1px solid #EAE2D5;
+      border-radius: 12px; 
+      padding: 30px 32px; 
+    }
+    .message p { 
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 18px; 
+      line-height: 1.8; 
+      color: #4A3E35; 
+      margin: 0; 
+      font-style: italic;
+    }
+
+    /* Sign off */
+    .signoff { 
+      padding: 8px 40px 48px; 
+      text-align: center;
+    }
+    .signoff-warm {
+      font-family: 'Alex Brush', 'Brush Script MT', cursive; 
+      font-size: 38px; 
+      color: #8C7B6E; 
+      margin: 0 0 8px;
+      line-height: 1;
+    }
+    .team { 
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 18px; 
+      font-weight: 600;
+      color: #3A2F28;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    /* Footer */
+    .footer { 
+      background-color: #FAF8F4; 
+      padding: 24px 40px;
+      text-align: center; 
+      color: #92857A; 
+      font-size: 11px; 
+      line-height: 1.6; 
+      border-top: 1px solid #EFECE6;
+    }
+  </style>
+</head>
+<body>
+<table class="wrapper" width="100%" cellpadding="0" cellspacing="0">
+  <tr><td align="center">
+    <table class="card" width="600" cellpadding="0" cellspacing="0">
+
+      <!-- Header -->
+      <tr>
+        <td class="header">
+          <div class="header-subtitle">Happy Birthday</div>
+          <h1 class="header-title">{{ name }}</h1>
+          <p class="header-dept">{{ department or "the team" }}</p>
+        </td>
+      </tr>
+
+      <!-- Separator -->
+      <tr>
+        <td class="separator">❧ ❁ ☙</td>
+      </tr>
+
+      <!-- Photo collage (only shown if photos provided) -->
+      {% if collage_image %}
+      <tr>
+        <td class="collage">
+          <img src="cid:collage_image"
+               alt="Birthday memories" width="520" />
+        </td>
+      </tr>
+      {% endif %}
+
+      <!-- Personalised message -->
+      <tr>
+        <td class="message-wrap">
+          <div class="message">
+            <p>{{ message }}</p>
+          </div>
+        </td>
+      </tr>
+
+      <!-- Sign off -->
+      <tr>
+        <td class="signoff">
+          <div class="signoff-warm">With all our love,</div>
+          <p class="team">The {{ department or "Team" }}</p>
+        </td>
+      </tr>
+
+      <!-- Footer -->
+      <tr>
+        <td class="footer">
+          This message was beautifully crafted for {{ name }} by Birthday Bot.<br>
+          Wishing you an abundance of joy in the year ahead.
+        </td>
+      </tr>
+
+    </table>
+  </td></tr>
+</table>
+</body>
+</html>
