@@ -20,13 +20,14 @@ load_dotenv(dotenv_path=_env_path)
 # ---------------------------------------------------------------------------
 
 GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
+SENDGRID_API_KEY: str = os.getenv("SENDGRID_API_KEY", "")
 FROM_EMAIL: str = os.getenv("FROM_EMAIL", "")
 FROM_NAME: str = os.getenv("FROM_NAME", "Birthday Bot")
 ADMIN_EMAIL: str = os.getenv("ADMIN_EMAIL", "")
 BASE_URL: str = os.getenv("BASE_URL", "http://localhost:8080")
 
 # ---------------------------------------------------------------------------
-# SMTP settings
+# SMTP settings (kept for optional local/fallback use)
 # ---------------------------------------------------------------------------
 
 SMTP_HOST: str = os.getenv("SMTP_HOST", "smtp.gmail.com")
@@ -59,11 +60,9 @@ LOGS_DIR: Path = Path(__file__).parent / "logs"
 
 _REQUIRED_VARS = {
     "GROQ_API_KEY": GROQ_API_KEY,
+    "SENDGRID_API_KEY": SENDGRID_API_KEY,
     "FROM_EMAIL": FROM_EMAIL,
     "ADMIN_EMAIL": ADMIN_EMAIL,
-    "SMTP_HOST": SMTP_HOST,
-    "SMTP_USER": SMTP_USER,
-    "SMTP_PASSWORD": SMTP_PASSWORD,
 }
 
 

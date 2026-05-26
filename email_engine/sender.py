@@ -1,14 +1,14 @@
 """
-email_engine/sender.py — Transactional email sending via SMTP.
+email_engine/sender.py — Transactional email sending via SendGrid HTTP API.
 
-Uses Python's built-in smtplib — no third-party email API required.
-Works with Gmail App Password, Outlook/Exchange, or any enterprise SMTP server.
+Uses the sendgrid Python SDK — no raw SMTP required, which means it works on
+Render's free tier (outbound SMTP on port 587/465 is blocked there).
 
 All four send functions follow the same pattern:
   1. Build Jinja2 template context
   2. Render the HTML template
   3. Run through premailer to inline all CSS (Outlook/Gmail compat)
-  4. Send via SMTP (STARTTLS on port 587, SSL on port 465)
+  4. Send via SendGrid HTTP API
   5. Return True on success, False on failure — never raises
 
 Usage:
@@ -16,19 +16,24 @@ Usage:
     ok = send_manager_request(employee, birthday_request)
 """
 
-import smtplib
-import ssl
-from datetime import datetime, timedelta
-from email.mime.base import MIMEBase
-from email import encoders
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from pathlib import Path
 import base64
+from datetime import datetime, timedelta
+from pathlib import Path
 
 import premailer
 import pytz
 from jinja2 import Environment, FileSystemLoader
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import (
+    Attachment,
+    ContentId,
+    Disposition,
+    FileContent,
+    FileName,
+    FileType,
+    Mail,
+    To,
+)
 
 from config import (
     ADMIN_EMAIL,
@@ -37,10 +42,7 @@ from config import (
     FROM_NAME,
     MAX_REMINDERS,
     SCHEDULER_TIMEZONE,
-    SMTP_HOST,
-    SMTP_PASSWORD,
-    SMTP_PORT,
-    SMTP_USER,
+    SENDGRID_API_KEY,
 )
 from utils.logger import log_event
 
@@ -92,14 +94,14 @@ def _form_url(token: str) -> str:
     return f"{BASE_URL.rstrip('/')}/submit/{token}"
 
 
-def _smtp_send(
+def _sendgrid_send(
     to: list[str],
     subject: str,
     html: str,
     images: list[tuple[str, bytes]] | None = None,
 ) -> None:
     """
-    Core SMTP send helper. Supports STARTTLS (port 587) and SSL (port 465).
+    Core SendGrid HTTP send helper.
 
     Args:
         to:      List of recipient email addresses.
@@ -108,49 +110,36 @@ def _smtp_send(
         images:  List of (content_id, image_bytes) tuples for inline images.
 
     Raises:
-        Exception: Any SMTP or connection error — callers handle this.
+        Exception: Any API or connection error — callers handle this.
     """
-    sender_display = f"{FROM_NAME} <{FROM_EMAIL}>" if FROM_NAME else FROM_EMAIL
+    from_addr = f"{FROM_NAME} <{FROM_EMAIL}>" if FROM_NAME else FROM_EMAIL
+
+    message = Mail(
+        from_email=from_addr,
+        to_emails=[To(addr) for addr in to],
+        subject=subject,
+        html_content=html,
+    )
 
     if images:
-        msg = MIMEMultipart("related")
-        msg["Subject"] = subject
-        msg["From"] = sender_display
-        msg["To"] = ", ".join(to)
-
-        msg_alternative = MIMEMultipart("alternative")
-        msg.attach(msg_alternative)
-        msg_alternative.attach(MIMEText(html, "html", "utf-8"))
-
         for cid, img_data in images:
-            part = MIMEBase("image", "jpeg")
-            part.set_payload(img_data)
-            encoders.encode_base64(part)
-            part.add_header("Content-ID", f"<{cid}>")
-            part.add_header("Content-Disposition", "inline", filename=f"{cid}.jpg")
-            msg.attach(part)
-    else:
-        msg = MIMEMultipart("alternative")
-        msg["Subject"] = subject
-        msg["From"] = sender_display
-        msg["To"] = ", ".join(to)
-        msg.attach(MIMEText(html, "html", "utf-8"))
+            attachment = Attachment(
+                FileContent(base64.b64encode(img_data).decode()),
+                FileName(f"{cid}.jpg"),
+                FileType("image/jpeg"),
+                Disposition("inline"),
+                ContentId(cid),
+            )
+            message.add_attachment(attachment)
 
-    context = ssl.create_default_context()
+    client = SendGridAPIClient(SENDGRID_API_KEY)
+    response = client.send(message)
 
-    if SMTP_PORT == 465:
-        # Direct SSL connection
-        with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT, context=context) as server:
-            server.login(SMTP_USER, SMTP_PASSWORD)
-            server.sendmail(FROM_EMAIL, to, msg.as_string())
-    else:
-        # STARTTLS (port 587 for Gmail, Outlook, etc.)
-        with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
-            server.ehlo()
-            server.starttls(context=context)
-            server.ehlo()
-            server.login(SMTP_USER, SMTP_PASSWORD)
-            server.sendmail(FROM_EMAIL, to, msg.as_string())
+    # SendGrid returns 2xx on success; raise on anything else
+    if response.status_code not in (200, 202):
+        raise RuntimeError(
+            f"SendGrid returned HTTP {response.status_code}: {response.body}"
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -183,7 +172,7 @@ def send_manager_request(employee, birthday_request) -> bool:
 
     try:
         html = _render("manager_request.html", context)
-        _smtp_send(
+        _sendgrid_send(
             to=[employee.manager_email],
             subject=f"🎂 Action needed: {employee.name}'s birthday is on {birthday_str}",
             html=html,
@@ -227,7 +216,7 @@ def send_manager_reminder(employee, birthday_request) -> bool:
 
     try:
         html = _render("manager_reminder.html", context)
-        _smtp_send(
+        _sendgrid_send(
             to=[employee.manager_email],
             subject=f"⏰ Reminder #{reminder_num}: {employee.name}'s birthday is in {days_left} days",
             html=html,
@@ -267,7 +256,7 @@ def send_birthday_email(
             img_data = base64.b64decode(collage_b64)
             images.append(("collage_image", img_data))
 
-        _smtp_send(
+        _sendgrid_send(
             to=[employee.email],
             subject=f"🎉 Happy Birthday, {employee.name.split()[0]}! 🎂",
             html=html_content,
@@ -299,7 +288,7 @@ def send_digest(summary_dict: dict) -> bool:
     date_str = summary_dict.get("date", "Today")
     try:
         html = _render("digest.html", summary_dict)
-        _smtp_send(
+        _sendgrid_send(
             to=[ADMIN_EMAIL],
             subject=f"📊 Birthday Bot Daily Digest — {date_str}",
             html=html,

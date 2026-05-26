@@ -17,7 +17,8 @@ apscheduler==3.10.4
 pandas==2.2.2
 openpyxl==3.1.2                  # Excel read engine for pandas
 
-# Email (smtplib, ssl, email.mime are Python standard library — no install needed)
+# Email
+sendgrid==6.11.0                  # HTTP-based email API — works on Render free tier (no SMTP block)
 premailer==3.10.0                 # CSS inlining for email compatibility
 jinja2==3.1.4                     # HTML templating (also used by FastAPI)
 
