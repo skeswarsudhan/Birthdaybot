@@ -171,16 +171,14 @@ async def submit_form(
     req.manager_submitted_at = datetime.utcnow()
     db.commit()
 
-    # Check if we should trigger an immediate test birthday email delivery
-    test_emails = {"antigravitymapla@gmail.com", "eswar@rampp.ai", "eswarsudhanphotography@gmail.com"}
-    if emp and emp.email.lower() in test_emails:
-        from scheduler.jobs import send_single_birthday_email_by_req_id
-        background_tasks.add_task(send_single_birthday_email_by_req_id, req.id)
-        log_event(
-            "INFO",
-            "test_birthday_mail_triggered_immediate",
-            detail=f"employee={employee_name}, triggered immediately via background tasks"
-        )
+    # Trigger birthday email immediately after manager form submission
+    from scheduler.jobs import send_single_birthday_email_by_req_id
+    background_tasks.add_task(send_single_birthday_email_by_req_id, req.id)
+    log_event(
+        "INFO",
+        "birthday_mail_triggered",
+        detail=f"employee={employee_name}, triggered immediately via background tasks"
+    )
 
     log_event(
         "INFO",
