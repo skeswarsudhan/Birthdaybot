@@ -165,10 +165,10 @@ async def trigger_test(
     emp = db.query(Employee).filter(Employee.email == email.lower()).first()
     if not emp:
         emp = Employee(
-            name="Test Employee Eswar",
+            name=email.split("@")[0].replace(".", " ").title(),
             email=email.lower(),
             dob=today,
-            manager_name="Test Manager Mapla",
+            manager_name="Manager",
             manager_email=manager_email.lower(),
             department="Engineering",
             active=True
@@ -227,8 +227,6 @@ async def trigger_test(
         "instructions": (
             "1. Open the form_url in your browser.\n"
             "2. Fill in the fun facts and submit.\n"
-            "3. Once submitted, the system will trigger the final birthday email "
-            "to the employee (eswar@rampp.ai) in exactly 2 minutes."
+            "3. Once submitted, the birthday email will be sent to the employee immediately."
         )
     }
-
