@@ -83,6 +83,21 @@ def get_db():
         session.close()
 
 
+def _run_migrations() -> None:
+    """
+    Apply any additive schema migrations (ALTER TABLE ADD COLUMN).
+    Safe to run on every startup — each statement is guarded by a column existence check.
+    """
+    from sqlalchemy import text
+    with engine.connect() as conn:
+        # Add `role` column to birthday_requests if it was added after initial deploy
+        try:
+            conn.execute(text("ALTER TABLE birthday_requests ADD COLUMN role VARCHAR(255)"))
+            conn.commit()
+        except Exception:
+            pass  # Column already exists — ignore
+
+
 def init_db() -> None:
     """
     Create all tables defined in models.py if they do not already exist.
@@ -90,3 +105,4 @@ def init_db() -> None:
     Safe to call multiple times — uses CREATE TABLE IF NOT EXISTS semantics.
     """
     Base.metadata.create_all(bind=engine)
+    _run_migrations()

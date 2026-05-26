@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Birthday Details Submission — Birthday Bot</title>
+  <title>Birthday Details — Accenture</title>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -22,9 +22,20 @@
       border: 1px solid #E5E7EB;
       border-radius: 8px; 
       padding: 48px 40px;
-      max-width: 540px; 
+      max-width: 560px; 
       width: 100%;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02); 
+    }
+    .brand {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .brand-name {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #A100FF;
     }
     h1 { 
       font-size: 20px; 
@@ -43,8 +54,8 @@
       line-height: 1.5;
     }
     .employee-banner { 
-      background: #F9FAFB;
-      border: 1px solid #E5E7EB; 
+      background: #F5F0FF;
+      border: 1px solid #E0D0FF; 
       border-radius: 6px;
       padding: 16px 20px; 
       margin-bottom: 32px; 
@@ -87,6 +98,11 @@
       font-weight: 400; 
       margin-top: 2px;
     }
+    .required {
+      color: #A100FF;
+      margin-left: 2px;
+    }
+    input[type="text"],
     textarea { 
       width: 100%; 
       border: 1px solid #D1D5DB; 
@@ -94,19 +110,27 @@
       padding: 12px 14px; 
       font-size: 13px; 
       font-family: inherit;
-      resize: vertical; 
-      min-height: 110px; 
       color: #111827;
       background: #FFFFFF;
       transition: border-color 0.15s ease-in-out; 
       outline: none; 
-      margin-bottom: 24px; 
     }
+    input[type="text"] {
+      margin-bottom: 24px;
+    }
+    input[type="text"]:focus,
     textarea:focus { 
-      border-color: #4B5563; 
+      border-color: #A100FF;
+      box-shadow: 0 0 0 3px rgba(161, 0, 255, 0.08);
     }
+    input[type="text"]::placeholder,
     textarea::placeholder {
       color: #9CA3AF;
+    }
+    textarea {
+      resize: vertical; 
+      min-height: 110px;
+      margin-bottom: 24px; 
     }
     .file-upload-area { 
       border: 1px dashed #D1D5DB; 
@@ -119,7 +143,7 @@
       margin-bottom: 32px; 
     }
     .file-upload-area:hover { 
-      border-color: #4B5563; 
+      border-color: #A100FF; 
     }
     .file-upload-area input[type="file"] { 
       display: none; 
@@ -148,25 +172,25 @@
     }
     .submit-btn { 
       width: 100%; 
-      background: #1F2937;
+      background: #A100FF;
       color: #FFFFFF; 
-      border: 1px solid #111827; 
+      border: none; 
       border-radius: 6px; 
       padding: 14px;
       font-size: 14px; 
-      font-weight: 500; 
+      font-weight: 600; 
       cursor: pointer;
       transition: background-color 0.15s ease-in-out; 
+      letter-spacing: 0.2px;
     }
     .submit-btn:hover { 
-      background: #111827; 
+      background: #8A00D4; 
     }
     .submit-btn:active { 
-      background: #000000; 
+      background: #6F00AA;
     }
     .submit-btn:disabled {
       background: #9CA3AF;
-      border-color: #9CA3AF;
       cursor: not-allowed;
     }
     #file-names { 
@@ -179,8 +203,11 @@
 </head>
 <body>
   <div class="card">
-    <h1>Birthday Details Submission</h1>
-    <p class="subtitle">Please provide the details to prepare the automated birthday communication for {{ employee_name }}.</p>
+    <div class="brand">
+      <span class="brand-name">Accenture</span>
+    </div>
+    <h1>🎂 Birthday Celebration Details</h1>
+    <p class="subtitle">Help us make {{ employee_name }}'s birthday special — it only takes 2 minutes!</p>
 
     <div class="employee-banner">
       <div class="emp-name">{{ employee_name }}</div>
@@ -190,28 +217,35 @@
     </div>
 
     {% if error %}
-    <div class="error-box">Error: {{ error }}</div>
+    <div class="error-box">⚠ {{ error }}</div>
     {% endif %}
 
     <form method="post" action="/submit/{{ token }}" enctype="multipart/form-data" id="birthday-form">
 
+      <label for="role">
+        Role / Title <span class="required">*</span>
+        <span class="hint">The employee's current role or job title (e.g., Senior Analyst, Project Manager, Associate).</span>
+      </label>
+      <input type="text" id="role" name="role" value="{{ role }}"
+        placeholder="e.g., Senior Analyst, Delivery Lead, Associate Consultant…" required>
+
       <label for="fun_facts">
-        Fun facts
-        <span class="hint">Information about hobbies, professional accomplishments, unique stories, or milestones.</span>
+        Fun facts about {{ employee_name }}
+        <span class="hint">Hobbies, personal achievements, memorable moments, or anything that makes them unique.</span>
       </label>
       <textarea id="fun_facts" name="fun_facts" rows="4"
-        placeholder="e.g., Professional accomplishments, training for a marathon, passionate about cooking, or key technical triumphs..."></textarea>
+        placeholder="e.g., Recently ran their first half-marathon, passionate about photography, always the first to help the team...">{{ fun_facts }}</textarea>
 
       <label for="personal_message">
-        Personal message
-        <span class="hint">A message from you that will be incorporated into the final communication (optional).</span>
+        Personal message from you
+        <span class="hint">A note from you that will be woven into the birthday message (optional).</span>
       </label>
       <textarea id="personal_message" name="personal_message" rows="3"
-        placeholder="e.g., Thank you for your leadership and dedication this year. Wishing you a great year ahead."></textarea>
+        placeholder="e.g., Thank you for your leadership and the positive energy you bring every day. Wishing you a great year ahead!">{{ personal_message }}</textarea>
 
       <label>
-        Optional photos
-        <span class="hint">Upload up to 5 photos (JPG or PNG, maximum 2 MB per file) to create a visual collage.</span>
+        Photos (optional)
+        <span class="hint">Upload up to 5 photos (JPG or PNG, max 2 MB each) — we'll build a visual collage.</span>
       </label>
       <div class="file-upload-area" onclick="document.getElementById('photos').click()">
         <p>Drag and drop photos here, or click to select files</p>
@@ -222,7 +256,7 @@
       </div>
 
       <button type="submit" class="submit-btn" id="submit-btn">
-        Submit Details
+        Submit Details →
       </button>
     </form>
   </div>
@@ -242,7 +276,7 @@
     document.getElementById('birthday-form').addEventListener('submit', function() {
       const btn = document.getElementById('submit-btn');
       btn.disabled = true;
-      btn.textContent = 'Submitting details...';
+      btn.textContent = 'Submitting…';
     });
   </script>
 </body>

@@ -15,16 +15,19 @@
             border-radius: 12px; overflow: hidden;
             box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
 
-    /* Header */
-    .header { background: linear-gradient(135deg, #6C3DE8 0%, #B06AFF 100%);
+    /* Header — Accenture purple */
+    .header { background: linear-gradient(135deg, #1a0033 0%, #A100FF 100%);
               padding: 40px 40px 32px; text-align: center; }
-    .header-emoji { font-size: 56px; line-height: 1; margin-bottom: 12px; }
+    .header-brand { font-size: 11px; font-weight: 700; letter-spacing: 3px;
+                    text-transform: uppercase; color: rgba(255,255,255,0.55);
+                    margin: 0 0 16px; }
+    .header-emoji { font-size: 48px; line-height: 1; margin-bottom: 12px; }
     .header-title { color: #ffffff; font-size: 24px; font-weight: 700;
                     letter-spacing: -0.5px; margin: 0; }
     .header-subtitle { color: rgba(255,255,255,0.85); font-size: 15px; margin: 8px 0 0; }
 
     /* Birthday banner */
-    .banner { background-color: #FFF7ED; border-left: 4px solid #F97316;
+    .banner { background-color: #F5F0FF; border-left: 4px solid #A100FF;
               margin: 28px 40px 0; padding: 16px 20px; border-radius: 0 8px 8px 0; }
     .banner-name { font-size: 20px; font-weight: 700; color: #1a1a2e; margin: 0 0 4px; }
     .banner-date { font-size: 14px; color: #78716c; margin: 0; }
@@ -34,14 +37,15 @@
     .body p { font-size: 15px; line-height: 1.7; color: #374151; margin: 0 0 16px; }
 
     /* What we need */
-    .section-title { font-size: 13px; font-weight: 700; color: #6C3DE8;
+    .section-title { font-size: 13px; font-weight: 700; color: #A100FF;
                      text-transform: uppercase; letter-spacing: 0.8px;
                      margin: 24px 0 12px; }
     .checklist { padding: 0; margin: 0 0 8px; list-style: none; }
     .checklist li { font-size: 14px; color: #374151; padding: 5px 0 5px 24px;
                     position: relative; line-height: 1.5; }
     .checklist li::before { content: "✓"; position: absolute; left: 0;
-                             color: #10b981; font-weight: 700; }
+                             color: #A100FF; font-weight: 700; }
+    .checklist li strong { color: #1a0033; }
 
     /* Deadline note */
     .deadline { background-color: #FEF3C7; border: 1px solid #FDE68A;
@@ -50,15 +54,14 @@
 
     /* CTA Button */
     .cta-wrap { text-align: center; padding: 28px 0; }
-    .cta-btn { display: inline-block; background: linear-gradient(135deg, #6C3DE8, #B06AFF);
+    .cta-btn { display: inline-block; background: linear-gradient(135deg, #1a0033, #A100FF);
                color: #ffffff !important; font-size: 16px; font-weight: 700;
                padding: 16px 40px; border-radius: 50px;
                text-decoration: none; letter-spacing: 0.3px; }
 
     /* Footer */
-    .footer { border-top: 1px solid #f0f0f0; padding: 20px 40px;
-              text-align: center; color: #9ca3af; font-size: 12px; line-height: 1.6; }
-    .footer a { color: #6C3DE8; }
+    .footer { background-color: #1a0033; padding: 20px 40px;
+              text-align: center; color: rgba(255,255,255,0.45); font-size: 12px; line-height: 1.6; }
   </style>
 </head>
 <body>
@@ -70,6 +73,7 @@
         <!-- Header -->
         <tr>
           <td class="header">
+            <p class="header-brand">Accenture</p>
             <div class="header-emoji">🎂</div>
             <h1 class="header-title">Birthday Celebration Coming Up!</h1>
             <p class="header-subtitle">We need a little help from you, {{ manager_name }}.</p>
@@ -96,15 +100,16 @@
               to make it genuinely personal.
             </p>
             <p>
-              Could you spare 3 minutes to share a few details? The more you tell us,
+              Could you spare 2 minutes to share a few details? The more you tell us,
               the more heartfelt the birthday message will be.
             </p>
 
             <p class="section-title">What we're asking for</p>
             <ul class="checklist">
-              <li>A couple of fun facts about {{ employee_name }} (hobbies, achievements, quirks!)</li>
+              <li><strong>Role / Title</strong> — {{ employee_name }}'s current job title or role</li>
+              <li>A couple of fun facts about {{ employee_name }} (hobbies, achievements, milestones!)</li>
               <li>A short personal message from you to them</li>
-              <li>Optional: a few photos (up to 5) — we'll build a little collage 🖼️</li>
+              <li>Optional: a few photos (up to 5) — we'll build a collage 🖼️</li>
             </ul>
 
             <div class="deadline">
@@ -120,7 +125,7 @@
               Fill in the Birthday Form →
             </a>
             <p style="font-size:12px; color:#9ca3af; margin-top:14px;">
-              Or copy this link: <a href="{{ form_url }}" style="color:#6C3DE8;">{{ form_url }}</a>
+              Or copy this link: <a href="{{ form_url }}" style="color:#A100FF;">{{ form_url }}</a>
             </p>
           </td>
         </tr>
@@ -128,7 +133,7 @@
         <!-- Footer -->
         <tr>
           <td class="footer">
-            This email was sent automatically by Birthday Bot.<br>
+            This email was sent automatically by Accenture's Birthday Bot.<br>
             You received this because you are listed as {{ employee_name }}'s manager.
           </td>
         </tr>

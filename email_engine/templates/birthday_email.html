@@ -29,30 +29,39 @@
       box-shadow: 0 6px 24px rgba(74, 59, 50, 0.04);
       overflow: hidden; 
     }
-    /* Elegant Botanical Header */
+
+    /* Accenture Header */
     .header { 
-      background-color: #E2E7E1; /* Pale sage green */
+      background: linear-gradient(160deg, #1a0033 0%, #460080 60%, #A100FF 100%);
       padding: 56px 40px 36px; 
       text-align: center; 
-      border-bottom: 1px solid #D2DCD0;
+    }
+    .header-brand {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin: 0 0 20px;
     }
     .header-subtitle { 
       font-family: 'Alex Brush', 'Brush Script MT', cursive; 
       font-size: 36px; 
-      color: #75836F; /* Muted olive */
+      color: rgba(255,255,255,0.75);
       margin: 0 0 8px;
       line-height: 1;
     }
     .header-title { 
-      color: #3A2F28; /* Earthy deep brown */
+      color: #FFFFFF;
       font-family: 'Playfair Display', Georgia, serif; 
       font-size: 40px; 
       font-weight: 600;
       margin: 0 0 12px; 
       line-height: 1.2;
     }
-    .header-dept { 
-      color: #8C7B6E; 
+    .header-role { 
+      color: rgba(255,255,255,0.65); 
       font-size: 11px; 
       text-transform: uppercase;
       letter-spacing: 3px;
@@ -87,7 +96,7 @@
       padding: 32px 40px; 
     }
     .message { 
-      background-color: #FAF8F4; /* Pale linen background */
+      background-color: #FAF8F4;
       border: 1px solid #EAE2D5;
       border-radius: 12px; 
       padding: 30px 32px; 
@@ -103,7 +112,7 @@
 
     /* Sign off */
     .signoff { 
-      padding: 8px 40px 48px; 
+      padding: 8px 40px 40px; 
       text-align: center;
     }
     .signoff-warm {
@@ -114,23 +123,23 @@
       line-height: 1;
     }
     .team { 
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 18px; 
+      font-family: 'Inter', sans-serif;
+      font-size: 13px; 
       font-weight: 600;
-      color: #3A2F28;
-      letter-spacing: 1px;
+      color: #A100FF;
+      letter-spacing: 2px;
+      text-transform: uppercase;
       margin: 0;
     }
 
     /* Footer */
     .footer { 
-      background-color: #FAF8F4; 
+      background-color: #1a0033; 
       padding: 24px 40px;
       text-align: center; 
-      color: #92857A; 
+      color: rgba(255,255,255,0.45); 
       font-size: 11px; 
       line-height: 1.6; 
-      border-top: 1px solid #EFECE6;
     }
   </style>
 </head>
@@ -142,9 +151,10 @@
       <!-- Header -->
       <tr>
         <td class="header">
+          <p class="header-brand">Accenture</p>
           <div class="header-subtitle">Happy Birthday</div>
           <h1 class="header-title">{{ name }}</h1>
-          <p class="header-dept">{{ department or "the team" }}</p>
+          <p class="header-role">{{ role or department or "Team Member" }}</p>
         </td>
       </tr>
 
@@ -176,15 +186,15 @@
       <tr>
         <td class="signoff">
           <div class="signoff-warm">With all our love,</div>
-          <p class="team">The {{ department or "Team" }}</p>
+          <p class="team">Accenture</p>
         </td>
       </tr>
 
       <!-- Footer -->
       <tr>
         <td class="footer">
-          This message was beautifully crafted for {{ name }} by Birthday Bot.<br>
-          Wishing you an abundance of joy in the year ahead.
+          This birthday message was crafted with care for {{ name }} by Accenture's Birthday Bot.<br>
+          Wishing you an abundance of joy in the year ahead. 💜
         </td>
       </tr>
 

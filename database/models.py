@@ -94,6 +94,7 @@ class BirthdayRequest(Base):
     # Content collected from manager
     fun_facts = Column(Text, nullable=True)
     personal_message = Column(Text, nullable=True)
+    role = Column(String(255), nullable=True)  # Employee's role/title as provided by manager
     photos = Column(JSON, nullable=True)  # List of file path strings
 
     # Generated content

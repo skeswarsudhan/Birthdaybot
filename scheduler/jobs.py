@@ -267,6 +267,7 @@ def send_birthday_emails_job():
                         department=emp.department or "",
                         fun_facts=req.fun_facts or "",
                         personal_message=req.personal_message or "",
+                        role=req.role or "",
                     )
                     req.ai_generated_message = ai_msg
 
@@ -278,6 +279,7 @@ def send_birthday_emails_job():
                     html = _render_birthday_email(
                         name=emp.name,
                         department=emp.department or "the team",
+                        role=req.role or "",
                         message=ai_msg,
                         collage_image=collage_b64,
                     )
@@ -295,6 +297,7 @@ def send_birthday_emails_job():
                     html = _render_birthday_email(
                         name=emp.name,
                         department=emp.department or "the team",
+                        role=req.role or "",
                         message=fallback_msg,
                         collage_image=None,
                     )
@@ -344,6 +347,7 @@ def send_single_birthday_email_by_req_id(req_id: int):
                     department=emp.department or "",
                     fun_facts=req.fun_facts or "",
                     personal_message=req.personal_message or "",
+                    role=req.role or "",
                 )
                 req.ai_generated_message = ai_msg
 
@@ -353,6 +357,7 @@ def send_single_birthday_email_by_req_id(req_id: int):
                 html = _render_birthday_email(
                     name=emp.name,
                     department=emp.department or "the team",
+                    role=req.role or "",
                     message=ai_msg,
                     collage_image=collage_b64,
                 )
@@ -369,6 +374,7 @@ def send_single_birthday_email_by_req_id(req_id: int):
                 html = _render_birthday_email(
                     name=emp.name,
                     department=emp.department or "the team",
+                    role=req.role or "",
                     message=fallback_msg,
                     collage_image=None,
                 )
@@ -381,7 +387,7 @@ def send_single_birthday_email_by_req_id(req_id: int):
                 session.commit()
                 log_event("INFO", "single_birthday_email_success", detail=f"Sent birthday email to {emp.name}")
             else:
-                log_event("ERROR", "single_birthday_email_failed", detail=f"Resend rejected email to {emp.name}")
+                log_event("ERROR", "single_birthday_email_failed", detail=f"SendGrid rejected email to {emp.name}")
     except Exception as exc:
         log_event("ERROR", "single_birthday_email_crashed", detail=str(exc))
 
@@ -389,6 +395,7 @@ def send_single_birthday_email_by_req_id(req_id: int):
 def _render_birthday_email(
     name: str,
     department: str,
+    role: str,
     message: str,
     collage_image: str | None,
 ) -> str:
@@ -397,6 +404,7 @@ def _render_birthday_email(
     raw = template.render(
         name=name,
         department=department,
+        role=role,
         message=message,
         collage_image=collage_image,
     )

@@ -76,6 +76,7 @@ async def show_form(request: Request, token: str, db: Session = Depends(get_db))
             "error": None,
             "fun_facts": "",
             "personal_message": "",
+            "role": "",
         },
     )
 
@@ -91,6 +92,7 @@ async def submit_form(
     token: str,
     fun_facts: str = Form(default=""),
     personal_message: str = Form(default=""),
+    role: str = Form(default=""),
     photos: list[UploadFile] = File(default=[]),
     db: Session = Depends(get_db),
 ):
@@ -163,6 +165,7 @@ async def submit_form(
     # ---- Update BirthdayRequest ----
     req.fun_facts = fun_facts.strip() or None
     req.personal_message = personal_message.strip() or None
+    req.role = role.strip() or None
     req.photos = saved_paths if saved_paths else None
     req.status = "received"
     req.manager_submitted_at = datetime.utcnow()
