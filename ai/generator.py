@@ -116,7 +116,7 @@ def generate_birthday_message(
                 log_event(
                     "INFO",
                     "ai_message_generated",
-                    detail=f"employee={name}, model={model_name}, chars={len(message)}",
+                    detail=f"employee={name}, model={model_name}, chars={len(message)}, message={message}",
                 )
                 return message
         except Exception as exc:  # noqa: BLE001
@@ -124,12 +124,13 @@ def generate_birthday_message(
             continue  # Try next model
 
     # All models failed — use hardcoded fallback
-    log_event(
-        "WARNING",
-        "ai_message_fallback",
-        detail=f"employee={name}, reason={last_exc}",
-    )
-    return _FALLBACK_TEMPLATE.format(
+    fallback_message = _FALLBACK_TEMPLATE.format(
         name=name,
         department=department or "the team",
     )
+    log_event(
+        "WARNING",
+        "ai_message_fallback",
+        detail=f"employee={name}, reason={last_exc}, message={fallback_message}",
+    )
+    return fallback_message
